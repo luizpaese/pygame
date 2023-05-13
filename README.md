@@ -8,7 +8,8 @@ Este comando faz a instalação dos pacotes necessários para que o jogo rode co
 
 ## Iniciando o jogo
 Para iniciar o jogo basta executar o comando ``python pong.py``.<br>
-É levado em consideração que a estrutura de pastas é a mesma deste repositório.
+É levado em consideração que a estrutura de pastas é a mesma deste repositório.<br><br>
+**Opcionalmente, você pode baixar o arquivo ``.exe`` neste [link](https://github.com/luizpaese/pygame/releases/download/v1.0/pong.zip)**
 
 ### Screenshots
 ![alt text](assets/start.jpg "Início de jogo")<br><br>
