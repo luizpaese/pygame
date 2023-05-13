@@ -20,7 +20,7 @@ def game():
     score_b = 0
     score_a = 0
 
-    font_file = 'Press_Start_2P/PressStart2P-Regular.ttf'
+    font_file = '../Press_Start_2P/PressStart2P-Regular.ttf'
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Pong")
 

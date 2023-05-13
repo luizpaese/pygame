@@ -9,7 +9,7 @@ SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 WHITE = (255,255,255)
 BLACK = (0,0,0)
-font_file = 'Press_Start_2P/PressStart2P-Regular.ttf'
+font_file = '../Press_Start_2P/PressStart2P-Regular.ttf'
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
