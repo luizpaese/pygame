@@ -1,7 +1,6 @@
 import pygame
 import sys
 
-# (O código de inicialização e variáveis globais permanecem o mesmo)
 pygame.init()
 
 SCREEN_WIDTH = 640
@@ -12,28 +11,35 @@ BALL_SIZE = 10
 PADDLE_SPEED = 10
 BALL_SPEED = 3
 START = 0
-WINNER_SCORE = 1
+WINNER_SCORE = 3
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-score_b = 0
-score_a = 0
-
-font_file = 'Press_Start_2P/PressStart2P-Regular.ttf'
+font_file = 'font/PressStart2P-Regular.ttf'
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pong")
 
-# pygame.rect(x,y,width,height)
 paddle_a = pygame.Rect(20, SCREEN_HEIGHT // 2 - PADDLE_HEIGHT // 2, PADDLE_WIDTH, PADDLE_HEIGHT)
 paddle_b = pygame.Rect(SCREEN_WIDTH - 20 - PADDLE_WIDTH, SCREEN_HEIGHT // 2 - PADDLE_HEIGHT // 2, PADDLE_WIDTH,
                        PADDLE_HEIGHT)
 ball = pygame.Rect(SCREEN_WIDTH // 2 - BALL_SIZE // 2, SCREEN_HEIGHT // 2 - BALL_SIZE // 2, BALL_SIZE, BALL_SIZE)
 ball_dx, ball_dy = BALL_SPEED, BALL_SPEED
 
+music_game = pygame.mixer.Sound('sounds/music_game.mp3')
+sound_a = pygame.mixer.Sound('sounds/Sound_A.wav')
+sound_b = pygame.mixer.Sound('sounds/Sound_B.wav')
+hoohoo = pygame.mixer.Sound('sounds/hoohooo.wav')
+
 
 # Funções de estado
 def main_menu():
+    global score_a, score_b
+
+    pygame.mixer.Sound.play(music_game)
+
+    score_b = 0
+    score_a = 0
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -46,8 +52,6 @@ def main_menu():
                     sys.exit()
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
-
-        # Renderização do menu principal
 
         screen.fill(BLACK)
         title_font = pygame.font.Font(font_file, 36)
@@ -64,11 +68,10 @@ def main_menu():
             title_rect1 = title_text1.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 60))
             screen.blit(title_text1, title_rect1)
 
-        # Desenhe o título e as instruções aqui
         pygame.display.flip()
 
 def game_loop():
-    global ball_dx, ball_dy, score_a, score_b, START
+    global ball_dx, ball_dy, score_a, score_b, START, BALL_SPEED
 
     while True:
         for event in pygame.event.get():
@@ -135,26 +138,30 @@ def game_loop():
         if ball.colliderect(paddle_a):
             ball.left = paddle_a.right
             ball_dx = -ball_dx
+            pygame.mixer.Sound.play(sound_a)
 
         elif ball.colliderect(paddle_b):
             ball.right = paddle_b.left
             ball_dx = -ball_dx
+            pygame.mixer.Sound.play(sound_b)
 
         if ball.top <= 0 or ball.bottom >= SCREEN_HEIGHT:
             ball_dy = -ball_dy
 
         if ball.left <= 0:
-            score_b += 1
             ball.x = SCREEN_WIDTH // 2 - BALL_SIZE // 2
             ball.y = SCREEN_HEIGHT // 2 - BALL_SIZE // 2
             ball_dx = -ball_dx
+            score_b += 1
+            pygame.mixer.Sound.play(hoohoo)
             print(f'Pontos B: {score_b}')
 
         if ball.right >= SCREEN_WIDTH:
-            score_a += 1
             ball.x = SCREEN_WIDTH // 2 - BALL_SIZE // 2
             ball.y = SCREEN_HEIGHT // 2 - BALL_SIZE // 2
             ball_dx = -ball_dx
+            score_a += 1
+            pygame.mixer.Sound.play(hoohoo)
             print(f'Pontos A: {score_a}')
 
         pygame.display.flip()
@@ -167,11 +174,6 @@ def game_loop():
         elif score_b == WINNER_SCORE:
             end_game('Jogador B')
 
-        # (O código de atualização de posição das raquetes, posição da bola e detecção de colisão permanece o mesmo)
-
-        # Verifica se a bola saiu da tela e muda para o estado de fim de jogo
-
-        # (O código de renderização dos elementos do jogo permanece o mesmo)
 
 def end_game(winner):
     while True:
@@ -181,7 +183,7 @@ def end_game(winner):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    game_loop()
+                    main_menu()
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
@@ -198,12 +200,19 @@ def end_game(winner):
         title_rect1 = title_text1.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 40))
         screen.blit(title_text1, title_rect1)
         # Desenhe o texto de vitória e instruções aqui
+
+        current_time = pygame.time.get_ticks()
+        if current_time % 2000 < 1000:
+            title_font_main_menu = pygame.font.Font(font_file, 10)
+            title_text_main_menu = title_font_main_menu.render("Pressione espaço para iniciar", True, WHITE)
+            title_rect_main_menu = title_text_main_menu.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80))
+            screen.blit(title_text_main_menu, title_rect_main_menu)
+
         pygame.display.flip()
+
 
 def reset_game():
     global paddle_a, paddle_b, ball, ball_dx, ball_dy, score_a, score_b
 
 
-
-# Inicie a FSM no estado do menu principal
 main_menu()
