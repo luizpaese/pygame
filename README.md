@@ -1,6 +1,6 @@
 # PONG
 
-Repositório criado para desenvolvimento de um jogo baseado no Clássico PONG.
+Repositório criado para desenvolvimento de um jogo baseado no [Clássico PONG](https://g.co/kgs/AwrcFE).
 
 ## Instalação de requisitos
 No seu terminal, execute o comando ``pip install -r requirements.txt``.<br>
